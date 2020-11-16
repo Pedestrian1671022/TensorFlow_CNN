@@ -47,6 +47,7 @@ with tf.compat.v1.Session() as sess:
     for _ in range(int(validation_size/batch_size)):
         img_validation, filename, label_validation = sess.run(next_element_validation)
         print(filename, label_validation)
+#         cv2.imshow("windows", cv2.imread(filename[0].decode()))
         # cv2.imshow("windows", np.squeeze(img_validation))
         # cv2.waitKey(0)
     #     acc += sess.run(accuracy, feed_dict={images: img_validation, labels: label_validation})
