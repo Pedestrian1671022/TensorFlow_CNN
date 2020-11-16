@@ -11,12 +11,13 @@ tfrecord_validation = "flowers_validation.tfrecord"
 photo_files = []
 
 def convert_dataset(filenames, tfrecord_file):
-    with tf.python_io.TFRecordWriter(tfrecord_file) as tfrecord_writer:
+    with tf.compat.v1.io.TFRecordWriter(tfrecord_file) as tfrecord_writer:
         for file in filenames:
             img = Image.open(file)
-            example = tf.train.Example(features=tf.train.Features(
-                feature={"label": tf.train.Feature(int64_list=tf.train.Int64List(value=[flowers.index(os.path.basename(os.path.dirname(file)))])),
-                         "image": tf.train.Feature(bytes_list=tf.train.BytesList(value=[img.tobytes()]))}))
+            example = tf.compat.v1.train.Example(features=tf.compat.v1.train.Features(
+                feature={"label": tf.compat.v1.train.Feature(int64_list=tf.compat.v1.train.Int64List(value=[flowers.index(os.path.basename(os.path.dirname(file)))])),
+                         "filename": tf.compat.v1.train.Feature(bytes_list=tf.compat.v1.train.BytesList(value=[file.encode()])),
+                         "image": tf.compat.v1.train.Feature(bytes_list=tf.compat.v1.train.BytesList(value=[img.tobytes()]))}))
             print(file, flowers.index(os.path.basename(os.path.dirname(file))))
             tfrecord_writer.write(example.SerializeToString())
 
